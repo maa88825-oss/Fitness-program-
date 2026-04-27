@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitness Dashboard Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --bg2: #0d1420;
+  --bg3: #111c2d;
+  --card: #0f1929;
+  --border: #1e3050;
+  --accent: #00d4ff;
+  --accent2: #ff6b35;
+  --accent3: #7c3aed;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --glow: 0 0 20px rgba(0,212,255,0.3);
+  --glow2: 0 0 20px rgba(255,107,53,0.3);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #080c14 0%, #0d1a2e 50%, #080c14 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+}
+.header-sub { color: var(--text2); font-size: 13px; margin-right: auto; font-family:'Cairo'; }
+
+/* TABS */
+.tabs-nav {
+  display: flex;
+  gap: 4px;
+  padding: 20px 24px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.tab-btn {
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border: none;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+  position: relative;
+}
+.tab-btn:hover { color: var(--text2); }
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.tab-content { display: none; padding: 28px 24px; }
+.tab-content.active { display: block; }
+
+/* COMMON */
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.input-group { margin-bottom: 16px; }
+.input-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.inp {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.3s;
+  direction: ltr;
+}
+.inp:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(0,212,255,0.1); }
+select.inp { cursor: pointer; }
+.btn {
+  background: linear-gradient(135deg, var(--accent), #0099bb);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 24px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--glow);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,212,255,0.5); }
+.btn-orange {
+  background: linear-gradient(135deg, var(--accent2), #e05520);
+  box-shadow: var(--glow2);
+}
+.btn-orange:hover { box-shadow: 0 0 30px rgba(255,107,53,0.5); }
+.btn-green { background: linear-gradient(135deg, var(--green), #059669); }
+
+/* GRID LAYOUTS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+
+/* TABLES */
+.tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  background: var(--bg3);
+  color: var(--accent);
+  font-weight: 700;
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+td {
+  padding: 8px 12px;
+  text-align: center;
+  border-bottom: 1px solid rgba(30,48,80,0.5);
+  color: var(--text2);
+  font-size: 13px;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(0,212,255,0.04); color: var(--text); }
+.td-highlight { color: var(--accent); font-weight: 700; }
+.td-em { color: var(--accent2); font-weight: 600; }
+
+/* BADGES / TAGS */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.badge-blue { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+.badge-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid rgba(255,107,53,0.3); }
+.badge-green { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.badge-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+.badge-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.badge-purple { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+
+/* STAT CARDS */
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-val { font-family: 'Orbitron', monospace; font-size: 28px; font-weight: 700; color: var(--accent); }
+.stat-lbl { font-size: 11px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* WEEK PHASE LABELS */
+.phase-aerobic { color: var(--green); }
+.phase-interval { color: var(--yellow); }
+.phase-tempo { color: var(--accent2); }
+.phase-speed { color: var(--red); }
+
+/* INTENSITY COLORS */
+.int-low { color: var(--green); }
+.int-mod { color: var(--yellow); }
+.int-high { color: var(--accent2); }
+.int-max { color: var(--red); }
+
+/* HR ZONES */
+.zone1 { background: rgba(16,185,129,0.12); }
+.zone2 { background: rgba(96,165,250,0.12); }
+.zone3 { background: rgba(245,158,11,0.12); }
+.zone4 { background: rgba(255,107,53,0.12); }
+.zone5 { background: rgba(239,68,68,0.12); }
+
+/* EXERCISE TAGS */
+.ex-tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.ex-tag {
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: var(--text2);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ex-tag:hover, .ex-tag.selected {
+  background: rgba(0,212,255,0.2);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* EXERCISE INPUT ROWS */
+.ex-input-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(30,48,80,0.5);
+}
+.ex-input-row:last-child { border-bottom: none; }
+.ex-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.ex-cat { font-size: 11px; color: var(--text3); }
+.remove-ex {
+  background: rgba(239,68,68,0.15);
+  color: var(--red);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+.remove-ex:hover { background: rgba(239,68,68,0.3); }
+
+/* RESULT AREAS */
+#result-1rm, #result-gym, #result-run, #result-row { min-height: 40px; }
+
+.week-header {
+  background: linear-gradient(135deg, var(--bg3), var(--card));
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 12px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.week-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.week-phase { font-size: 12px; }
+.week-sessions { font-size: 11px; color: var(--text3); margin-right: auto; }
+
+/* COOPER TABLE */
+.cooper-age-group { font-weight: 700; color: var(--accent2); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .tabs-nav { gap: 2px; }
+  .tab-btn { padding: 8px 12px; font-size: 12px; }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+.collapse-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0 6px;
+  transition: transform 0.3s;
+}
+.collapsed .collapse-btn { transform: rotate(-90deg); }
+.collapsible-content { transition: all 0.3s; overflow: hidden; }
+.collapsible-content.hidden { display: none; }
+
+.sep { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">⚡ FITNESS PRO</div>
+  <div class="header-sub">لوحة التدريب الاحترافية — 12 أسبوع</div>
+</div>
+
+<!-- TABS NAV -->
+<div class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('tab1',this)">🏋️ 1RM Calculator</button>
+  <button class="tab-btn" onclick="switchTab('tab2',this)">💪 Gym Training Loads</button>
+  <button class="tab-btn" onclick="switchTab('tab3',this)">🏃 Running Program</button>
+  <button class="tab-btn" onclick="switchTab('tab4',this)">🚣 Concept2 Rowing</button>
+  <button class="tab-btn" onclick="switchTab('tab5',this)">📊 Fitness Tests</button>
+</div>
+
+<!-- ============================================================ TAB 1: 1RM Calculator -->
+<div id="tab1" class="tab-content active">
+  <div class="section-title">🏋️ حاسبة أقصى قوة (1RM)</div>
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <label class="input-label">اختر التمرين</label>
+        <select class="inp" id="ex1rm" onchange="load1RMData()">
+          <option value="Squat">Squat — سكوات خلفي</option>
+          <option value="Front Squat">Front Squat — سكوات أمامي</option>
+          <option value="Shoulder Press">Shoulder Press — ضغط أكتاف</option>
+          <option value="Deadlift">Deadlift — ديدلفت</option>
+          <option value="Snatch">Snatch — خطف</option>
+          <option value="Clean">Clean — نظيف</option>
+          <option value="Jerk">Jerk — انتزاع</option>
+        </select>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label class="input-label">الوزن (كجم)</label>
+          <input class="inp" id="w1rm" type="number" placeholder="مثال: 80" min="1" step="0.5">
+        </div>
+        <div>
+          <label class="input-label">عدد التكرارات</label>
+          <input class="inp" id="r1rm" type="number" placeholder="مثال: 5" min="1" max="30">
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button class="btn" onclick="calc1RM()">احسب الـ 1RM</button>
+      <select class="inp" style="width:200px;" id="formulaType">
+        <option value="epley">Epley Formula</option>
+        <option value="brzycki">Brzycki Formula</option>
+        <option value="lander">Lander Formula</option>
+        <option value="lombardi">Lombardi Formula</option>
+      </select>
+      <button class="btn btn-orange" onclick="clearAll1RM()" style="padding:11px 16px; font-size:12px;">🗑 مسح الكل</button>
+    </div>
+  </div>
+
+  <!-- SAVED EXERCISES SUMMARY -->
+  <div id="saved1rmCards" style="display:none;">
+    <div class="section-title" style="font-size:13px; margin-bottom:12px;">💾 آخر تسجيل لكل تمرين</div>
+    <div id="saved1rmGrid" style="display:grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-bottom:20px;"></div>
+  </div>
+
+  <div id="result-1rm"></div>
+</div>
+
+<!-- ============================================================ TAB 2: GYM TRAINING LOADS -->
+<div id="tab2" class="tab-content">
+  <div class="section-title">💪 أحمال التدريب — 12 أسبوع (Hypertrophy)</div>
+
+  <div class="card">
+    <div class="grid-3">
+      <div>
+        <label class="input-label">عدد التدريب في الأسبوع</label>
+        <select class="inp" id="gymFreq">
+          <option value="1">مرة واحدة / أسبوع</option>
+          <option value="2">مرتان / أسبوع</option>
+          <option value="3" selected>3 مرات / أسبوع</option>
+        </select>
+      </div>
+      <div>
+        <label class="input-label">اختر مجموعة العضلات</label>
+        <select class="inp" id="muscleGroup" onchange="loadExerciseList()">
+          <option value="">-- اختر مجموعة --</option>
+          <option value="chest">صدر (Chest)</option>
+          <option value="back">ظهر (Back)</option>
+          <option value="legs">أرجل (Legs)</option>
+          <option value="shoulders">أكتاف (Shoulders)</option>
+          <option value="arms">ذراع (Arms)</option>
+          <option value="core">بطن (Core)</option>
+        </select>
+      </div>
+      <div>
+        <label class="input-label">اختر تمريناً</label>
+        <select class="inp" id="exercisePicker">
+          <option value="">-- اختر تمريناً --</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px; display:flex; gap:10px;">
+      <button class="btn" onclick="addExercise()">+ إضافة التمرين</button>
+      <button class="btn btn-orange" onclick="generateGymProgram()">🚀 توليد البرنامج</button>
+    </div>
+  </div>
+
+  <!-- EXERCISE LIST -->
+  <div class="card" id="exListCard" style="display:none;">
+    <div class="section-title" style="font-size:13px;">📋 التمارين المختارة — أدخل وزن الـ 10RM لكل تمرين</div>
+    <div id="exListContainer"></div>
+  </div>
+
+  <!-- PROGRAM OUTPUT -->
+  <div id="result-gym"></div>
+</div>
+
+<!-- ============================================================ TAB 3: RUNNING PROGRAM -->
+<div id="tab3" class="tab-content">
+  <div class="section-title">🏃 برنامج الجري — 30 دقيقة (12 أسبوع)</div>
+  <div class="card">
+    <div class="grid-4">
+      <div>
+        <label class="input-label">المسافة الأولية (كم)</label>
+        <input class="inp" id="runDist" type="number" placeholder="مثال: 5.2" step="0.1" min="1">
+      </div>
+      <div>
+        <label class="input-label">العمر (سنة)</label>
+        <input class="inp" id="runAge" type="number" placeholder="مثال: 30" min="15" max="80">
+      </div>
+      <div>
+        <label class="input-label">نبض الراحة (BPM)</label>
+        <input class="inp" id="runHR" type="number" placeholder="مثال: 60" min="40" max="100">
+      </div>
+      <div>
+        <label class="input-label">جلسات / أسبوع</label>
+        <select class="inp" id="runFreq">
+          <option value="1">1 مرة</option>
+          <option value="2">مرتان</option>
+          <option value="3" selected>3 مرات</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <button class="btn" onclick="generateRunProgram()">🚀 توليد برنامج الجري</button>
+    </div>
+  </div>
+  <div id="result-run"></div>
+</div>
+
+<!-- ============================================================ TAB 4: ROWING -->
+<div id="tab4" class="tab-content">
+  <div class="section-title">🚣 برنامج التجديف Concept2 — 12 أسبوع</div>
+  <div class="card">
+    <div class="grid-4">
+      <div>
+        <label class="input-label">زمن 2000م الحالي (دق:ثا)</label>
+        <input class="inp" id="rowTime" type="text" placeholder="مثال: 8:30" dir="ltr">
+      </div>
+      <div>
+        <label class="input-label">العمر</label>
+        <input class="inp" id="rowAge" type="number" placeholder="مثال: 30" min="15" max="80">
+      </div>
+      <div>
+        <label class="input-label">جلسات / أسبوع</label>
+        <select class="inp" id="rowFreq">
+          <option value="1">1 مرة</option>
+          <option value="2">مرتان</option>
+          <option value="3" selected>3 مرات</option>
+        </select>
+      </div>
+      <div>
+        <label class="input-label">المستوى</label>
+        <select class="inp" id="rowLevel">
+          <option value="beginner">مبتدئ</option>
+          <option value="intermediate" selected>متوسط</option>
+          <option value="advanced">متقدم</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <button class="btn" onclick="generateRowProgram()">🚀 توليد برنامج التجديف</button>
+    </div>
+  </div>
+  <div id="result-row"></div>
+</div>
+
+<!-- ============================================================ TAB 5: FITNESS TESTS -->
+<div id="tab5" class="tab-content">
+  <div class="section-title">📊 اختبارات اللياقة (Fitness Tests)</div>
+
+  <!-- COOPER TEST -->
+  <div class="card">
+    <div style="font-family:'Orbitron',monospace; font-size:14px; color:var(--accent2); margin-bottom:16px; font-weight:700;">🏃 اختبار كوبر — 12 دقيقة (رجال)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>الفئة</th>
+            <th>13-14 سنة</th>
+            <th>15-16 سنة</th>
+            <th>17-19 سنة</th>
+            <th>20-29 سنة</th>
+            <th>30-39 سنة</th>
+            <th>40-49 سنة</th>
+            <th>50+ سنة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-highlight">ممتاز</td><td>&gt;2700</td><td>&gt;2800</td><td>&gt;3000</td><td>&gt;2800</td><td>&gt;2700</td><td>&gt;2500</td><td>&gt;2400</td></tr>
+          <tr><td style="color:var(--green)">جيد جداً</td><td>2400-2700</td><td>2500-2800</td><td>2700-3000</td><td>2400-2800</td><td>2300-2700</td><td>2100-2500</td><td>2000-2400</td></tr>
+          <tr><td style="color:var(--yellow)">جيد</td><td>2200-2400</td><td>2300-2500</td><td>2500-2700</td><td>2200-2400</td><td>1900-2300</td><td>1700-2100</td><td>1600-2000</td></tr>
+          <tr><td style="color:var(--accent2)">مقبول</td><td>2100-2200</td><td>2200-2300</td><td>2300-2500</td><td>1600-2200</td><td>1500-1900</td><td>1400-1700</td><td>1300-1600</td></tr>
+          <tr><td style="color:var(--red)">ضعيف</td><td>&lt;2100</td><td>&lt;2200</td><td>&lt;2300</td><td>&lt;1600</td><td>&lt;1500</td><td>&lt;1400</td><td>&lt;1300</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11px; color:var(--text3); margin-top:8px;">* المسافة بالمتر في 12 دقيقة جري</p>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+      <div>
+        <label class="input-label">المسافة التي قطعتها (متر)</label>
+        <input class="inp" style="width:180px;" id="cooperDist" type="number" placeholder="مثال: 2600">
+      </div>
+      <div>
+        <label class="input-label">العمر</label>
+        <input class="inp" style="width:120px;" id="cooperAge" type="number" placeholder="مثال: 28">
+      </div>
+      <button class="btn" onclick="evalCooper()">تقييم</button>
+    </div>
+    <div id="cooperResult" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- PUSH-UP TEST -->
+  <div class="card">
+    <div style="font-family:'Orbitron',monospace; font-size:14px; color:var(--green); margin-bottom:16px; font-weight:700;">💪 اختبار الضغط (Push-Up) — دقيقة واحدة (رجال)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>الفئة</th><th>17-19</th><th>20-29</th><th>30-39</th><th>40-49</th><th>50-59</th><th>60+</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-highlight">ممتاز</td><td>&gt;56</td><td>&gt;47</td><td>&gt;41</td><td>&gt;34</td><td>&gt;28</td><td>&gt;20</td></tr>
+          <tr><td style="color:var(--green)">جيد جداً</td><td>47-56</td><td>39-47</td><td>34-41</td><td>28-34</td><td>22-28</td><td>16-20</td></tr>
+          <tr><td style="color:var(--yellow)">جيد</td><td>35-46</td><td>29-38</td><td>25-33</td><td>21-27</td><td>15-21</td><td>10-15</td></tr>
+          <tr><td style="color:var(--accent2)">مقبول</td><td>19-34</td><td>17-28</td><td>13-24</td><td>11-20</td><td>9-14</td><td>6-9</td></tr>
+          <tr><td style="color:var(--red)">ضعيف</td><td>&lt;19</td><td>&lt;17</td><td>&lt;13</td><td>&lt;11</td><td>&lt;9</td><td>&lt;6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+      <div>
+        <label class="input-label">عدد الضغط (دقيقة)</label>
+        <input class="inp" style="width:180px;" id="pushupCount" type="number" placeholder="مثال: 35">
+      </div>
+      <div>
+        <label class="input-label">العمر</label>
+        <input class="inp" style="width:120px;" id="pushupAge" type="number" placeholder="مثال: 28">
+      </div>
+      <button class="btn btn-green" onclick="evalPushup()">تقييم</button>
+    </div>
+    <div id="pushupResult" style="margin-top:12px;"></div>
+  </div>
+
+  <!-- SQUAT TEST -->
+  <div class="card">
+    <div style="font-family:'Orbitron',monospace; font-size:14px; color:var(--accent); margin-bottom:16px; font-weight:700;">🦵 اختبار السكوات (Squat) — دقيقتان (رجال)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>الفئة</th><th>17-19</th><th>20-29</th><th>30-39</th><th>40-49</th><th>50-59</th><th>60+</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="td-highlight">ممتاز</td><td>&gt;100</td><td>&gt;90</td><td>&gt;80</td><td>&gt;70</td><td>&gt;60</td><td>&gt;50</td></tr>
+          <tr><td style="color:var(--green)">جيد جداً</td><td>85-100</td><td>75-90</td><td>65-80</td><td>55-70</td><td>45-60</td><td>38-50</td></tr>
+          <tr><td style="color:var(--yellow)">جيد</td><td>65-84</td><td>55-74</td><td>45-64</td><td>40-54</td><td>35-44</td><td>28-37</td></tr>
+          <tr><td style="color:var(--accent2)">مقبول</td><td>45-64</td><td>35-54</td><td>30-44</td><td>25-39</td><td>20-34</td><td>15-27</td></tr>
+          <tr><td style="color:var(--red)">ضعيف</td><td>&lt;45</td><td>&lt;35</td><td>&lt;30</td><td>&lt;25</td><td>&lt;20</td><td>&lt;15</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+      <div>
+        <label class="input-label">عدد السكوات (دقيقتان)</label>
+        <input class="inp" style="width:200px;" id="squatCount" type="number" placeholder="مثال: 70">
+      </div>
+      <div>
+        <label class="input-label">العمر</label>
+        <input class="inp" style="width:120px;" id="squatAge" type="number" placeholder="مثال: 28">
+      </div>
+      <button class="btn btn-orange" onclick="evalSquat()">تقييم</button>
+    </div>
+    <div id="squatResult" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<!-- ================================================ SCRIPTS ================================================ -->
+<script>
+
+// ===== TAB SWITCHING =====
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== KG <-> LB =====
+const kgToLb = kg => (kg * 2.20462).toFixed(1);
+
+// ===== 1RM FORMULAS =====
+function compute1RM(w, r, formula) {
+  if (r === 1) return w;
+  switch(formula) {
+    case 'epley':    return w * (1 + r/30);
+    case 'brzycki':  return w * (36/(37-r));
+    case 'lander':   return (100 * w) / (101.3 - 2.67123 * r);
+    case 'lombardi': return w * Math.pow(r, 0.1);
+    default:         return w * (1 + r/30);
+  }
+}
+
+// ===== TAB 1: 1RM PER-EXERCISE MEMORY =====
+// Each exercise saves its own weight, reps, formula, and computed 1RM
+const orm1rmData = {}; // { 'Squat': { w, r, formula, orm }, ... }
+
+function load1RMData() {
+  const ex = document.getElementById('ex1rm').value;
+  if (orm1rmData[ex]) {
+    document.getElementById('w1rm').value    = orm1rmData[ex].w;
+    document.getElementById('r1rm').value    = orm1rmData[ex].r;
+    document.getElementById('formulaType').value = orm1rmData[ex].formula;
+    renderTable1RM(ex, orm1rmData[ex].orm);
+  } else {
+    document.getElementById('w1rm').value   = '';
+    document.getElementById('r1rm').value   = '';
+    document.getElementById('result-1rm').innerHTML = '';
+  }
+}
+
+function calc1RM() {
+  const ex = document.getElementById('ex1rm').value;
+  const w  = parseFloat(document.getElementById('w1rm').value);
+  const r  = parseInt(document.getElementById('r1rm').value);
+  const f  = document.getElementById('formulaType').value;
+  if (!w || !r || w<=0 || r<1) { alert('أدخل الوزن وعدد التكرارات'); return; }
+  const orm = compute1RM(w, r, f);
+  // Save per exercise — independent from other exercises
+  orm1rmData[ex] = { w, r, formula: f, orm };
+  renderTable1RM(ex, orm);
+  renderSaved1RMCards();
+}
+
+function clearAll1RM() {
+  if (!confirm('هل تريد مسح جميع البيانات المحفوظة؟')) return;
+  Object.keys(orm1rmData).forEach(k => delete orm1rmData[k]);
+  document.getElementById('w1rm').value = '';
+  document.getElementById('r1rm').value = '';
+  document.getElementById('result-1rm').innerHTML = '';
+  renderSaved1RMCards();
+}
+
+function renderSaved1RMCards() {
+  const keys = Object.keys(orm1rmData);
+  const wrap = document.getElementById('saved1rmCards');
+  const grid = document.getElementById('saved1rmGrid');
+  if (keys.length === 0) { wrap.style.display='none'; return; }
+  wrap.style.display = 'block';
+  grid.innerHTML = keys.map(ex => {
+    const d = orm1rmData[ex];
+    return `<div class="stat-card" style="cursor:pointer; border:1px solid var(--border); transition:border-color 0.2s;"
+      onclick="document.getElementById('ex1rm').value='${ex}'; load1RMData();"
+      onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px; color:var(--accent2); font-weight:700; margin-bottom:4px;">${ex}</div>
+      <div class="stat-val" style="font-size:22px;">${d.orm.toFixed(1)}</div>
+      <div class="stat-lbl">1RM كجم</div>
+      <div style="font-size:10px; color:var(--text3); margin-top:4px;">${d.w}kg × ${d.r} reps</div>
+    </div>`;
+  }).join('');
+}
+
+function renderTable1RM(ex, orm) {
+  const pcts = [];
+  for (let p=40; p<=100; p+=5) pcts.push(p);
+  let rows = pcts.map(p => {
+    const wkg = (orm * p/100).toFixed(1);
+    const wlb = kgToLb(wkg);
+    const reps = pctToReps(p);
+    const int  = intensityClass(p);
+    return `<tr>
+      <td><span class="badge ${int.badge}">${p}%</span></td>
+      <td class="td-highlight">${wkg}</td>
+      <td>${wlb}</td>
+      <td>${reps}</td>
+      <td><span class="${int.cls}">${int.label}</span></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('result-1rm').innerHTML = `
+    <div class="card">
+      <div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+        <div class="stat-card" style="flex:1; min-width:140px;">
+          <div class="stat-val">${orm.toFixed(1)}</div><div class="stat-lbl">1RM (كجم)</div>
+        </div>
+        <div class="stat-card" style="flex:1; min-width:140px;">
+          <div class="stat-val" style="color:var(--accent2);">${kgToLb(orm.toFixed(1))}</div><div class="stat-lbl">1RM (باوند)</div>
+        </div>
+        <div class="stat-card" style="flex:1; min-width:200px;">
+          <div class="stat-val" style="font-size:18px; color:var(--green);">${ex}</div><div class="stat-lbl">التمرين</div>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>النسبة</th><th>الوزن (كجم)</th><th>الوزن (باوند)</th><th>التكرارات التقريبية</th><th>الشدة</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function pctToReps(p) {
+  if (p<=50) return '20+';
+  if (p<=55) return '16-20';
+  if (p<=60) return '15';
+  if (p<=65) return '13-14';
+  if (p<=70) return '12';
+  if (p<=75) return '10';
+  if (p<=80) return '8';
+  if (p<=85) return '6-7';
+  if (p<=90) return '4-5';
+  if (p<=95) return '2-3';
+  return '1';
+}
+
+function intensityClass(p) {
+  if (p<60) return { badge:'badge-green', cls:'int-low', label:'خفيف' };
+  if (p<75) return { badge:'badge-blue', cls:'int-mod', label:'متوسط' };
+  if (p<88) return { badge:'badge-orange', cls:'int-high', label:'عالي' };
+  return { badge:'badge-red', cls:'int-max', label:'أقصى' };
+}
+
+// ===== EXERCISE DICTIONARY =====
+const exDict = {
+  chest: [
+    'بنش برس مستوي (Flat Bench Press)','بنش برس عالي (Incline Bench Press)','بنش برس مائل (Decline Bench Press)',
+    'دمبل برس مستوي (Flat Dumbbell Press)','دمبل برس عالي (Incline Dumbbell Press)',
+    'تجميع دمبل (Dumbbell Flyes)','كابل كروس (Cable Crossover High-Low)',
+    'كابل تجميع سفلي (Low-to-High Cable Fly)','جهاز ضغط صدر (Chest Press Machine)',
+    'جهاز تجميع صدر (Pec Deck Fly)','هامر ستيرنغث (Hammer Strength Incline)'
+  ],
+  back: [
+    'ديدلفت عادي (Conventional Deadlift)','ديدلفت سومو (Sumo Deadlift)',
+    'سحب بار منحني (Bent-Over Barbell Row)','تي-بار سحب (T-Bar Row)',
+    'شراغ بالبار (Barbell Shrugs)','سحب دمبل أحادي (Single-Arm Dumbbell Row)',
+    'سحب دمبل صدري (Chest-Supported Row)','سحب لأسفل عريض (Lat Pulldown Wide)',
+    'سحب لأسفل ضيق (Lat Pulldown Close)','سحب كابل جالس (Seated Cable Row)',
+    'ذراع مستقيم كابل (Straight-Arm Pulldown)','فيس بول (Face Pulls)',
+    'عقله (Pull-Up/Chin-Up)','قطنية (Back Extension / Hyperextension)'
+  ],
+  legs: [
+    'سكوات خلفي (Back Squat)','سكوات أمامي (Front Squat)',
+    'RDL — رومانيان ديدلفت','طعن بالبار (Barbell Lunges)','هيب ثرست (Hip Thrusts)',
+    'كوبلت سكوات (Goblet Squat)','بلغاريان سكوات (Bulgarian Split Squat)',
+    'سكوات سومو (Sumo Squat)','ليج برس (Leg Press 45°)',
+    'هاك سكوات (Hack Squat Machine)','اكستنشن أرجل (Leg Extension)',
+    'كيرل أرجل مستلقي (Lying Leg Curl)','كيرل أرجل جالس (Seated Leg Curl)',
+    'سمانة واقف (Standing Calf Raise)','سمانة جالس (Seated Calf Raise)'
+  ],
+  shoulders: [
+    'أوفر هيد برس (Overhead Press)','بوش برس (Push Press)',
+    'سحب عمودي (Upright Row)','دمبل ضغط جالس (Seated DB Shoulder Press)',
+    'نشرة جانبية (Lateral Raise)','نشرة أمامية (Front Raise)',
+    'نشرة خلفية (Rear Delt Raise)','أرنولد برس (Arnold Press)',
+    'كابل نشرة جانبية (Cable Lateral Raise)','فيس بول أكتاف (Cable Face Pulls)',
+    'جهاز أكتاف (Shoulder Press Machine)'
+  ],
+  arms: [
+    'بايسبس بار (Barbell Curl)','بريتشر كيرل EZ (EZ-Bar Preacher Curl)',
+    'دمبل كيرل متناوب (Alternate Dumbbell Curl)','هامر كيرل (Hammer Curl)',
+    'كونسنتريشن كيرل (Concentration Curl)','كابل كيرل واقف (Standing Cable Curl)',
+    'ترايسبس ضغط ضيق (Close-Grip Bench Press)','سكال كراشر (Skull Crushers)',
+    'دمبل غطس خلف الرأس (Overhead DB Extension)','دفع كابل حبل (Tricep Rope Pushdown)',
+    'دفع كابل بار (Straight Bar Pushdown)','كابل من فوق (Overhead Cable Extension)'
+  ],
+  core: [
+    'طحن بالوزن (Weighted Crunches)','روسيان تويست (Russian Twists)',
+    'رفع أرجل معلق (Hanging Leg Raises)','كابل كرانش (Cable Crunch)',
+    'وودشوبر (Woodchoppers)','جهاز بطن (Abdominal Crunch Machine)'
+  ]
+};
+
+function loadExerciseList() {
+  const mg = document.getElementById('muscleGroup').value;
+  const picker = document.getElementById('exercisePicker');
+  picker.innerHTML = '<option value="">-- اختر تمريناً --</option>';
+  if (!mg) return;
+  exDict[mg].forEach(ex => {
+    const opt = document.createElement('option');
+    opt.value = ex; opt.textContent = ex;
+    picker.appendChild(opt);
+  });
+}
+
+let gymExercises = [];
+
+function addExercise() {
+  const ex = document.getElementById('exercisePicker').value;
+  const mg = document.getElementById('muscleGroup').value;
+  if (!ex) { alert('اختر تمريناً أولاً'); return; }
+  if (gymExercises.find(e => e.name === ex)) { alert('هذا التمرين مضاف مسبقاً'); return; }
+  gymExercises.push({ name: ex, group: mg, tenRM: '' });
+  renderExerciseInputs();
+}
+
+function removeExercise(name) {
+  gymExercises = gymExercises.filter(e => e.name !== name);
+  renderExerciseInputs();
+}
+
+function renderExerciseInputs() {
+  const card = document.getElementById('exListCard');
+  const container = document.getElementById('exListContainer');
+  if (gymExercises.length === 0) { card.style.display='none'; return; }
+  card.style.display = 'block';
+  container.innerHTML = gymExercises.map((ex,i) => `
+    <div class="ex-input-row">
+      <div>
+        <div class="ex-name">${ex.name}</div>
+        <div class="ex-cat">${groupLabel(ex.group)}</div>
+      </div>
+      <div>
+        <input class="inp" type="number" placeholder="10RM (كجم)" min="1" step="0.5"
+          value="${ex.tenRM}"
+          oninput="gymExercises[${i}].tenRM=this.value"
+          style="width:130px;">
+      </div>
+      <div style="font-size:11px; color:var(--text3);">
+        ${ex.tenRM ? '1RM ≈ <span style="color:var(--accent);font-weight:700;">'+(ex.tenRM/0.75).toFixed(1)+' كجم</span>' : '—'}
+      </div>
+      <button class="remove-ex" onclick="removeExercise('${ex.name.replace(/'/g,"\\'")}')">✕</button>
+    </div>
+  `).join('');
+}
+
+function groupLabel(g) {
+  const m={chest:'صدر',back:'ظهر',legs:'أرجل',shoulders:'أكتاف',arms:'ذراع',core:'بطن'};
+  return m[g]||g;
+}
+
+// HYPERTROPHY PROGRAM - 12 weeks
+const hypertrophyPlan = [
+  {w:1, int:70, sets:3, reps:15, rest:'60-90 ثانية', phase:'Accumulation'},
+  {w:2, int:72.5, sets:3, reps:14, rest:'60-90 ثانية', phase:'Accumulation'},
+  {w:3, int:75, sets:4, reps:12, rest:'90 ثانية', phase:'Accumulation'},
+  {w:4, int:77.5, sets:4, reps:12, rest:'90 ثانية', phase:'Volume'},
+  {w:5, int:80, sets:4, reps:10, rest:'90-120 ثانية', phase:'Volume'},
+  {w:6, int:80, sets:4, reps:10, rest:'90-120 ثانية', phase:'Volume'},
+  {w:7, int:82.5, sets:4, reps:8, rest:'2 دقيقة', phase:'Intensification'},
+  {w:8, int:85, sets:4, reps:8, rest:'2 دقيقة', phase:'Intensification'},
+  {w:9, int:87.5, sets:3, reps:7, rest:'2-3 دقيقة', phase:'Intensification'},
+  {w:10, int:90, sets:3, reps:6, rest:'3 دقيقة', phase:'Peak'},
+  {w:11, int:92.5, sets:3, reps:5, rest:'3 دقيقة', phase:'Peak'},
+  {w:12, int:95, sets:3, reps:'3-4', rest:'3+ دقيقة', phase:'Peak'},
+];
+
+const dayNames = {1:['يوم 1'],2:['يوم 1','يوم 2'],3:['يوم 1','يوم 2','يوم 3']};
+
+function generateGymProgram() {
+  if (gymExercises.length === 0) { alert('أضف تمريناً واحداً على الأقل'); return; }
+  const freq = parseInt(document.getElementById('gymFreq').value);
+  let html = '<div class="section-title" style="margin-top:20px;">📅 جداول الـ 12 أسبوع</div>';
+
+  gymExercises.forEach(ex => {
+    if (!ex.tenRM || ex.tenRM<=0) return;
+    const tenRM = parseFloat(ex.tenRM);
+    const orm   = tenRM / 0.75;
+    html += `
+      <div class="card" style="margin-bottom:24px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
+          <div style="font-family:'Orbitron',monospace; font-size:14px; color:var(--accent2); font-weight:700;">${ex.name}</div>
+          <span class="badge badge-blue">10RM: ${tenRM} كجم</span>
+          <span class="badge badge-orange">1RM: ${orm.toFixed(1)} كجم</span>
+          <span class="badge badge-green">${groupLabel(ex.group)}</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الأسبوع</th>
+                <th>المرحلة</th>
+                <th>الشدة%</th>
+                <th>الوزن (كجم)</th>
+                <th>الوزن (باوند)</th>
+                <th>المجموعات</th>
+                <th>التكرارات</th>
+                <th>الراحة</th>
+                ${freq>1 ? dayNames[freq].map(d=>`<th>${d}</th>`).join('') : ''}
+              </tr>
+            </thead>
+            <tbody>
+              ${hypertrophyPlan.map(row => {
+                const wkg = (orm * row.int/100).toFixed(1);
+                const wlb = kgToLb(wkg);
+                const ic  = intensityClass(row.int);
+                return `<tr>
+                  <td class="td-highlight">W${row.w}</td>
+                  <td><span class="badge badge-purple">${row.phase}</span></td>
+                  <td><span class="${ic.cls}">${row.int}%</span></td>
+                  <td class="td-highlight">${wkg}</td>
+                  <td>${wlb}</td>
+                  <td>${row.sets}</td>
+                  <td class="td-em">${row.reps}</td>
+                  <td style="font-size:11px; color:var(--text3);">${row.rest}</td>
+                  ${freq>1 ? dayNames[freq].map(d=>`<td style="font-size:11px; color:var(--text3);">${row.sets}×${row.reps}</td>`).join('') : ''}
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  });
+
+  if (html === '<div class="section-title" style="margin-top:20px;">📅 جداول الـ 12 أسبوع</div>') {
+    html += '<div class="card" style="color:var(--red);">أدخل وزن الـ 10RM لكل تمرين ثم اضغط توليد.</div>';
+  }
+  document.getElementById('result-gym').innerHTML = html;
+}
+
+// ===== TAB 3: RUNNING PROGRAM =====
+function generateRunProgram() {
+  const dist   = parseFloat(document.getElementById('runDist').value);
+  const age    = parseInt(document.getElementById('runAge').value);
+  const hrRest = parseInt(document.getElementById('runHR').value);
+  const freq   = parseInt(document.getElementById('runFreq').value);
+  if (!dist||!age) { alert('أدخل المسافة والعمر'); return; }
+
+  const hrMax   = 220 - age;
+  // Base speed & pace from the initial 30-min test
+  const baseSpeed   = dist / 0.5;            // km/h
+  const basePaceSec = 3600 / baseSpeed;      // sec/km  ← FIXED (was 1800/dist → same result but clarified)
+
+  const fmtPace = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = Math.round(sec % 60);
+    return `${m}:${String(s).padStart(2,'0')}`;
+  };
+
+  // Karvonen HR zones
+  const hrR  = hrRest || 60;
+  const hrRes = hrMax - hrR;
+  const zones = [
+    {name:'Zone 1 — Recovery',   pct:'50-60%', min: Math.round(hrR+hrRes*0.50), max: Math.round(hrR+hrRes*0.60), color:'var(--green)'},
+    {name:'Zone 2 — Aerobic',    pct:'60-70%', min: Math.round(hrR+hrRes*0.60), max: Math.round(hrR+hrRes*0.70), color:'#60a5fa'},
+    {name:'Zone 3 — Tempo',      pct:'70-80%', min: Math.round(hrR+hrRes*0.70), max: Math.round(hrR+hrRes*0.80), color:'var(--yellow)'},
+    {name:'Zone 4 — Threshold',  pct:'80-90%', min: Math.round(hrR+hrRes*0.80), max: Math.round(hrR+hrRes*0.90), color:'var(--accent2)'},
+    {name:'Zone 5 — VO2max',     pct:'90-100%',min: Math.round(hrR+hrRes*0.90), max: hrMax,                     color:'var(--red)'},
+  ];
+
+  // Map intensity % → HR zone range for display
+  function hrForIntensity(pct) {
+    if (pct <= 65)  return { zone:'Z1-Z2', min: zones[0].min, max: zones[1].max, color:'#60a5fa' };
+    if (pct <= 75)  return { zone:'Z2',    min: zones[1].min, max: zones[1].max, color:'#60a5fa' };
+    if (pct <= 82)  return { zone:'Z3',    min: zones[2].min, max: zones[2].max, color:'var(--yellow)' };
+    if (pct <= 90)  return { zone:'Z4',    min: zones[3].min, max: zones[3].max, color:'var(--accent2)' };
+    return                  { zone:'Z5',   min: zones[4].min, max: zones[4].max, color:'var(--red)' };
+  }
+
+  const runPlan = [
+    {w:1, phase:'Aerobic Build',    pctSpd:65, type:'Easy Run',    desc:'جري هوائي خفيف — Zone 2',                 duration:'25 دق'},
+    {w:2, phase:'Aerobic Build',    pctSpd:67, type:'Easy Run',    desc:'ثبات إيقاع — Zone 2',                     duration:'28 دق'},
+    {w:3, phase:'Aerobic Build',    pctSpd:70, type:'Steady State',desc:'بناء القاعدة الهوائية — Zone 2-3',        duration:'30 دق'},
+    {w:4, phase:'Intervals',        pctSpd:82, type:'Intervals',   desc:'8×400م بـ Zone 4 + 90ث راحة',             duration:'35 دق'},
+    {w:5, phase:'Intervals',        pctSpd:84, type:'Intervals',   desc:'6×600م بـ Zone 4 + 2دق راحة',             duration:'35 دق'},
+    {w:6, phase:'Intervals',        pctSpd:86, type:'Intervals',   desc:'5×800م بـ Zone 4-5 + 2دق راحة',           duration:'40 دق'},
+    {w:7, phase:'Tempo',            pctSpd:87, type:'Tempo Run',   desc:'جري إيقاع Zone 3-4 متواصل',               duration:'30 دق'},
+    {w:8, phase:'Tempo',            pctSpd:89, type:'Tempo Run',   desc:'تحسين الإيقاع Zone 4',                    duration:'32 دق'},
+    {w:9, phase:'Tempo',            pctSpd:90, type:'Cruise',      desc:'4×1 كم بـ Tempo Pace + 60ث راحة',         duration:'35 دق'},
+    {w:10,phase:'Speed Endurance',  pctSpd:92, type:'Speed',       desc:'تطوير السرعة — Zone 4-5',                 duration:'30 دق'},
+    {w:11,phase:'Speed Endurance',  pctSpd:94, type:'Speed',       desc:'3×1 كم بـ Zone 5 + 3دق راحة',             duration:'30 دق'},
+    {w:12,phase:'Test',             pctSpd:100,type:'Final Test',  desc:'⭐ اختبار نهائي 30 دقيقة — القياس الكامل',duration:'30 دق'},
+  ];
+
+  const sessionTypes = {
+    1: ['الجلسة الأساسية'],
+    2: ['الجلسة الأولى','الجلسة الثانية'],
+    3: ['الجلسة الأولى','الجلسة الثانية','الجلسة الثالثة']
+  };
+
+  let html = `
+    <div class="card">
+      <div style="margin-bottom:16px; display:flex; gap:12px; flex-wrap:wrap;">
+        <div class="stat-card" style="flex:1;min-width:120px;"><div class="stat-val">${dist}</div><div class="stat-lbl">المسافة (كم)</div></div>
+        <div class="stat-card" style="flex:1;min-width:120px;"><div class="stat-val" style="color:var(--accent2);">${baseSpeed.toFixed(2)}</div><div class="stat-lbl">السرعة الأساسية (كم/س)</div></div>
+        <div class="stat-card" style="flex:1;min-width:120px;"><div class="stat-val" style="color:var(--green);">${fmtPace(basePaceSec)}</div><div class="stat-lbl">Pace الأساسي (دق/كم)</div></div>
+        <div class="stat-card" style="flex:1;min-width:120px;"><div class="stat-val" style="color:var(--yellow);">${hrMax}</div><div class="stat-lbl">Max HR (BPM)</div></div>
+        <div class="stat-card" style="flex:1;min-width:120px;"><div class="stat-val" style="color:var(--red); font-size:18px;">${hrR}</div><div class="stat-lbl">HR الراحة (BPM)</div></div>
+      </div>
+
+      <div class="section-title" style="font-size:13px;">💓 مناطق نبض القلب (Karvonen)</div>
+      <div class="tbl-wrap" style="margin-bottom:20px;">
+        <table>
+          <thead><tr><th>المنطقة</th><th>النسبة%</th><th>HR أدنى</th><th>HR أقصى</th><th>الغرض</th></tr></thead>
+          <tbody>
+            ${zones.map((z,i)=>{
+              const purposes = ['تعافي وإحماء','بناء هوائي','إيقاع متوسط','عتبة اللاكتيك','VO2max / سرعة'];
+              return `<tr class="zone${i+1}"><td style="color:${z.color};font-weight:700;">${z.name}</td><td>${z.pct}</td>
+                <td style="color:${z.color};font-weight:600;">${z.min}</td>
+                <td style="color:${z.color};font-weight:600;">${z.max}</td>
+                <td style="font-size:11px; color:var(--text3);">${purposes[i]}</td></tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-title" style="font-size:13px;">📅 برنامج الـ 12 أسبوع (${freq} جلسة/أسبوع)</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الأسبوع</th>
+              <th>المرحلة</th>
+              <th>النوع</th>
+              <th>الشدة%</th>
+              <th>السرعة الهدف (كم/س)</th>
+              <th>Pace الهدف (دق/كم)</th>
+              <th>HR المستهدف (BPM)</th>
+              <th>Zone</th>
+              <th>المسافة المتوقعة</th>
+              <th>المدة</th>
+              <th>وصف الجلسة</th>
+              ${freq>=2 ? '<th>جلسة 2</th>' : ''}
+              ${freq>=3 ? '<th>جلسة 3</th>' : ''}
+            </tr>
+          </thead>
+          <tbody>
+            ${runPlan.map(row => {
+              // Target speed = base speed × intensity%
+              const tgtSpeed    = baseSpeed * row.pctSpd / 100;
+              // Target pace in sec/km from target speed
+              const tgtPaceSec  = 3600 / tgtSpeed;
+              // Estimated distance in 30 min at target speed
+              const tgtDist     = (tgtSpeed * 0.5).toFixed(2);
+
+              const hrZ = hrForIntensity(row.pctSpd);
+              const phaseColor = {
+                'Aerobic Build':'var(--green)','Intervals':'var(--yellow)',
+                'Tempo':'var(--accent2)','Speed Endurance':'var(--red)','Test':'var(--accent)'
+              };
+              const s2 = freq>=2 ? `<td style="font-size:11px; color:var(--text3);">تعافي Zone 1 — ${fmtPace(basePaceSec * 1.15)}/كم</td>` : '';
+              const s3 = freq>=3 ? `<td style="font-size:11px; color:var(--text3);">تكرار خفيف Zone 2 — ${fmtPace(basePaceSec * 1.08)}/كم</td>` : '';
+              return `<tr>
+                <td class="td-highlight">W${row.w}</td>
+                <td style="color:${phaseColor[row.phase]||'var(--text)'}; font-weight:600; font-size:12px;">${row.phase}</td>
+                <td><span class="badge badge-blue">${row.type}</span></td>
+                <td><span class="${intensityClass(row.pctSpd).cls}">${row.pctSpd}%</span></td>
+                <td class="td-em">${tgtSpeed.toFixed(2)}</td>
+                <td class="td-highlight">${fmtPace(tgtPaceSec)}</td>
+                <td style="color:${hrZ.color}; font-weight:700;">${hrZ.min}–${hrZ.max}</td>
+                <td><span class="badge" style="background:rgba(0,0,0,0.3); color:${hrZ.color}; border:1px solid ${hrZ.color};">${hrZ.zone}</span></td>
+                <td>${tgtDist} كم</td>
+                <td style="font-size:12px;">${row.duration}</td>
+                <td style="font-size:12px; color:var(--text2);">${row.desc}</td>
+                ${s2}${s3}
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  document.getElementById('result-run').innerHTML = html;
+}
+
+// ===== TAB 4: ROWING PROGRAM =====
+function parseRowTime(str) {
+  if (!str) return null;
+  const parts = str.split(':');
+  if (parts.length === 2) {
+    return parseInt(parts[0])*60 + parseInt(parts[1]);
+  }
+  return parseInt(str);
+}
+
+function formatSplit(sec) {
+  const m = Math.floor(sec/60);
+  const s = Math.round(sec%60);
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+
+function generateRowProgram() {
+  const timeStr = document.getElementById('rowTime').value;
+  const age     = parseInt(document.getElementById('rowAge').value)||30;
+  const freq    = parseInt(document.getElementById('rowFreq').value);
+  const totalSec= parseRowTime(timeStr);
+  if (!totalSec) { alert('أدخل زمن 2000م بصيغة دق:ثا (مثال: 8:30)'); return; }
+
+  const baseSplit = totalSec / 4; // split per 500m
+
+  const rowPlan = [
+    {w:1, phase:'Base',dist:'4×500م',splitPct:105,spm:'18-20',damper:'3-4',rpe:'RPE 5-6',desc:'بناء الأساس — حركات هادئة ومتكاملة'},
+    {w:2, phase:'Base',dist:'6×500م',splitPct:104,spm:'18-20',damper:'3-4',rpe:'RPE 5-6',desc:'زيادة الحجم التدريجي مع المحافظة على الشكل'},
+    {w:3, phase:'Base',dist:'2000م متواصل',splitPct:108,spm:'20-22',damper:'4',rpe:'RPE 6',desc:'جلسة أساسية بإيقاع منتظم'},
+    {w:4, phase:'Steady State',dist:'3×1000م',splitPct:103,spm:'20-22',damper:'4',rpe:'RPE 6-7',desc:'تثبيت السرعة في القطع المتوسطة'},
+    {w:5, phase:'Steady State',dist:'4×1000م',splitPct:102,spm:'22',damper:'4-5',rpe:'RPE 7',desc:'بناء التحمل الهوائي بشكل مباشر'},
+    {w:6, phase:'Steady State',dist:'5000م',splitPct:107,spm:'20-22',damper:'4',rpe:'RPE 6-7',desc:'تطوير القدرة الهوائية المستمرة'},
+    {w:7, phase:'Intervals',dist:'8×250م',splitPct:96,spm:'26-28',damper:'5-6',rpe:'RPE 8',desc:'فترات قصيرة بشدة عالية — راحة 90ث'},
+    {w:8, phase:'Intervals',dist:'6×500م',splitPct:97,spm:'26-28',damper:'5',rpe:'RPE 8-9',desc:'فترات متوسطة — راحة 2 دقيقة'},
+    {w:9, phase:'Intervals',dist:'4×1000م',splitPct:98,spm:'24-26',damper:'5',rpe:'RPE 8',desc:'قطع سرعة طويلة — راحة 3 دقائق'},
+    {w:10, phase:'Peak',dist:'3×500م',splitPct:94,spm:'28-30',damper:'5-6',rpe:'RPE 9',desc:'ذروة الشدة — تحفيز القصوى'},
+    {w:11, phase:'Taper',dist:'2×1000م',splitPct:100,spm:'22-24',damper:'4',rpe:'RPE 7',desc:'تقليص الحجم للتعافي قبل الاختبار'},
+    {w:12, phase:'Test',dist:'2000م — اختبار',splitPct:95,spm:'28-32',damper:'5',rpe:'RPE 10',desc:'⭐ اختبار 2000م الرسمي — أعطِ كل شيء!'},
+  ];
+
+  let html = `
+    <div class="card">
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+        <div class="stat-card" style="flex:1;min-width:140px;"><div class="stat-val">${formatSplit(totalSec)}</div><div class="stat-lbl">زمن 2000م الحالي</div></div>
+        <div class="stat-card" style="flex:1;min-width:140px;"><div class="stat-val" style="color:var(--accent2);">${formatSplit(baseSplit)}</div><div class="stat-lbl">Base Split / 500م</div></div>
+        <div class="stat-card" style="flex:1;min-width:140px;"><div class="stat-val" style="color:var(--green);">${freq}</div><div class="stat-lbl">جلسات / أسبوع</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الأسبوع</th>
+              <th>المرحلة</th>
+              <th>المسافة / التمرين</th>
+              <th>Target Split</th>
+              <th>SPM</th>
+              <th>Damper</th>
+              <th>RPE</th>
+              <th>شرح الجلسة</th>
+              ${freq>=2 ? '<th>جلسة 2</th>' : ''}
+              ${freq>=3 ? '<th>جلسة 3</th>' : ''}
+            </tr>
+          </thead>
+          <tbody>
+            ${rowPlan.map(row => {
+              const split = baseSplit * row.splitPct/100;
+              const phaseColors = {
+                'Base':'var(--green)','Steady State':'#60a5fa',
+                'Intervals':'var(--yellow)','Peak':'var(--accent2)',
+                'Taper':'var(--text2)','Test':'var(--accent)'
+              };
+              const j2 = freq>=2 ? `<td style="font-size:11px;color:var(--text3);">تعافي — ارجاع + إيقاع ${formatSplit(baseSplit*1.08)}</td>` : '';
+              const j3 = freq>=3 ? `<td style="font-size:11px;color:var(--text3);">تعافي خفيف — 3000م Zone 1</td>` : '';
+              return `<tr>
+                <td class="td-highlight">W${row.w}</td>
+                <td style="color:${phaseColors[row.phase]||'var(--text)'}; font-weight:700; font-size:12px;">${row.phase}</td>
+                <td style="font-size:12px;">${row.dist}</td>
+                <td class="td-em">${formatSplit(split)}</td>
+                <td style="color:var(--accent); font-weight:600;">${row.spm}</td>
+                <td>${row.damper}</td>
+                <td><span class="badge ${row.rpe.includes('9')||row.rpe.includes('10')?'badge-red':row.rpe.includes('8')?'badge-orange':'badge-green'}">${row.rpe}</span></td>
+                <td style="font-size:12px;color:var(--text2);">${row.desc}</td>
+                ${j2}${j3}
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  document.getElementById('result-row').innerHTML = html;
+}
+
+// ===== FITNESS TESTS =====
+const cooperStandards = {
+  '13-14':{ex:2700,vg:2400,g:2200,av:2100},
+  '15-16':{ex:2800,vg:2500,g:2300,av:2200},
+  '17-19':{ex:3000,vg:2700,g:2500,av:2300},
+  '20-29':{ex:2800,vg:2400,g:2200,av:1600},
+  '30-39':{ex:2700,vg:2300,g:1900,av:1500},
+  '40-49':{ex:2500,vg:2100,g:1700,av:1400},
+  '50+'  :{ex:2400,vg:2000,g:1600,av:1300},
+};
+const pushupStandards = {
+  '17-19':{ex:56,vg:47,g:35,av:19},
+  '20-29':{ex:47,vg:39,g:29,av:17},
+  '30-39':{ex:41,vg:34,g:25,av:13},
+  '40-49':{ex:34,vg:28,g:21,av:11},
+  '50-59':{ex:28,vg:22,g:15,av:9},
+  '60+'  :{ex:20,vg:16,g:10,av:6},
+};
+const squatStandards = {
+  '17-19':{ex:100,vg:85,g:65,av:45},
+  '20-29':{ex:90,vg:75,g:55,av:35},
+  '30-39':{ex:80,vg:65,g:45,av:30},
+  '40-49':{ex:70,vg:55,g:40,av:25},
+  '50-59':{ex:60,vg:45,g:35,av:20},
+  '60+'  :{ex:50,vg:38,g:28,av:15},
+};
+
+function getAgeGroup(age, type) {
+  if (type==='cooper') {
+    if (age<=14) return '13-14';
+    if (age<=16) return '15-16';
+    if (age<=19) return '17-19';
+    if (age<=29) return '20-29';
+    if (age<=39) return '30-39';
+    if (age<=49) return '40-49';
+    return '50+';
+  }
+  if (age<=19) return '17-19';
+  if (age<=29) return '20-29';
+  if (age<=39) return '30-39';
+  if (age<=49) return '40-49';
+  if (age<=59) return '50-59';
+  return '60+';
+}
+
+function classify(val, std) {
+  if (val>=std.ex) return {label:'ممتاز 🏆', color:'var(--accent)', badge:'badge-blue'};
+  if (val>=std.vg) return {label:'جيد جداً 💪', color:'var(--green)', badge:'badge-green'};
+  if (val>=std.g)  return {label:'جيد 👍', color:'var(--yellow)', badge:'badge-yellow'};
+  if (val>=std.av) return {label:'مقبول ✅', color:'var(--accent2)', badge:'badge-orange'};
+  return {label:'ضعيف — يحتاج تحسين', color:'var(--red)', badge:'badge-red'};
+}
+
+function evalCooper() {
+  const d = parseInt(document.getElementById('cooperDist').value);
+  const a = parseInt(document.getElementById('cooperAge').value);
+  if (!d||!a) { alert('أدخل المسافة والعمر'); return; }
+  const ag = getAgeGroup(a,'cooper');
+  const std = cooperStandards[ag];
+  const cls = classify(d,std);
+  const vo2 = ((d-504.9)/44.73).toFixed(1);
+  document.getElementById('cooperResult').innerHTML = `
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+      <div class="stat-card" style="flex:1;"><div class="stat-val" style="color:${cls.color};">${cls.label}</div><div class="stat-lbl">التقييم</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-val">${d}</div><div class="stat-lbl">مسافتك (م)</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-val" style="color:var(--green);">${vo2}</div><div class="stat-lbl">VO₂max (تقريبي)</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-val" style="font-size:16px;">${ag}</div><div class="stat-lbl">الفئة العمرية</div></div>
+    </div>`;
+}
+
+function evalPushup() {
+  const c = parseInt(document.getElementById('pushupCount').value);
+  const a = parseInt(document.getElementById('pushupAge').value);
+  if (!c||!a) { alert('أدخل العدد والعمر'); return; }
+  const ag = getAgeGroup(a,'other');
+  const std = pushupStandards[ag];
+  const cls = classify(c,std);
+  document.getElementById('pushupResult').innerHTML = `
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+      <div class="stat-card" style="flex:1;"><div class="stat-val" style="color:${cls.color};">${cls.label}</div><div class="stat-lbl">التقييم</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-val">${c}</div><div class="stat-lbl">عدد الضغطات</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-val" style="font-size:16px;">${ag}</div><div class="stat-lbl">الفئة العمرية</div></div>
+    </div>`;
+}
+
+function evalSquat() {
+  const c = parseInt(document.getElementById('squatCount').value);
+  const a = parseInt(document.getElementById('squatAge').value);
+  if (!c||!a) { alert('أدخل العدد والعمر'); return; }
+  const ag = getAgeGroup(a,'other');
+  const std = squatStandards[ag];
+  const cls = classify(c,std);
+  document.getElementById('squatResult').innerHTML = `
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+      <div class="stat-card" style="flex:1;"><div class="stat-val" style="color:${cls.color};">${cls.label}</div><div class="stat-lbl">التقييم</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-val">${c}</div><div class="stat-lbl">عدد السكوات</div></div>
+      <div class="stat-card" style="flex:1;"><div class="stat-lbl">الفئة العمرية</div><div class="stat-val" style="font-size:16px;">${ag}</div></div>
+    </div>`;
+}
+
+</script>
+</body>
+</html>
